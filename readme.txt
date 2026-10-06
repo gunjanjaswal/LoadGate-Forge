@@ -36,7 +36,7 @@ Rules only ever apply to normal front-end page views. The admin area, the login 
 
 == Installation ==
 
-1. Upload the `loadgateforge` folder to `/wp-content/plugins/`, or install it from the Plugins screen.
+1. Upload the `loadgate-forge` folder to `/wp-content/plugins/`, or install it from the Plugins screen.
 2. Activate the plugin. It installs its loader into `wp-content/mu-plugins/`.
 3. Go to Settings then LoadGate Forge and add your first rule.
 

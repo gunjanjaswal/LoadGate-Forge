@@ -51,7 +51,7 @@ So even a rule that matches everything can't touch your dashboard, and LoadGate 
 
 **Manually**
 
-1. Copy the `loadgateforge` folder into `wp-content/plugins/`.
+1. Copy the `loadgate-forge` folder into `wp-content/plugins/`.
 2. Activate **LoadGate Forge**.
 
 Either way, activation installs the loader into `wp-content/mu-plugins/`. Then open **Settings → LoadGate Forge**.

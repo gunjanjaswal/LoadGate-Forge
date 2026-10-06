@@ -102,8 +102,12 @@ if ( ! function_exists( 'loadgateforge_mu_filter_active_plugins' ) ) {
 			return $plugins;
 		}
 
-		// LoadGate Forge must never disable itself.
-		unset( $disable['loadgateforge/loadgateforge.php'] );
+		// LoadGate Forge must never disable itself. The plugin records its own
+		// path on activation, so this works whatever folder it is installed in.
+		$self = get_option( 'loadgateforge_self' );
+		if ( $self ) {
+			unset( $disable[ $self ] );
+		}
 
 		$kept = array();
 		foreach ( $plugins as $plugin_file ) {

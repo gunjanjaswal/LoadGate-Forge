@@ -10,7 +10,7 @@
  * Author URI:        https://www.gunjanjaswal.me
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       loadgateforge
+ * Text Domain:       loadgate-forge
  *
  * @package LoadGateForge
  */
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'LOADGATEFORGE_VERSION', '1.0.0' );
-define( 'LOADGATEFORGE_SELF', 'loadgateforge/loadgateforge.php' );
+define( 'LOADGATEFORGE_SELF', plugin_basename( __FILE__ ) );
 
 /**
  * Path to the mu-plugins directory.
@@ -71,6 +71,8 @@ function loadgateforge_install_mu() {
 	$ok = $wp_filesystem->put_contents( loadgateforge_mu_target(), $content, FS_CHMOD_FILE );
 	if ( $ok ) {
 		update_option( 'loadgateforge_mu_version', LOADGATEFORGE_VERSION, false );
+		// Record our own plugin path so the loader never disables this plugin.
+		update_option( 'loadgateforge_self', LOADGATEFORGE_SELF, false );
 	}
 
 	return (bool) $ok;
@@ -93,6 +95,7 @@ function loadgateforge_remove_mu() {
 	}
 
 	delete_option( 'loadgateforge_mu_version' );
+	delete_option( 'loadgateforge_self' );
 }
 
 register_activation_hook( __FILE__, 'loadgateforge_install_mu' );
@@ -117,6 +120,11 @@ function loadgateforge_maybe_sync_mu() {
 	if ( $missing || LOADGATEFORGE_VERSION !== $installed ) {
 		loadgateforge_install_mu();
 	}
+
+	// Keep the recorded plugin path current (for example after a folder rename).
+	if ( get_option( 'loadgateforge_self' ) !== LOADGATEFORGE_SELF ) {
+		update_option( 'loadgateforge_self', LOADGATEFORGE_SELF, false );
+	}
 }
 add_action( 'admin_init', 'loadgateforge_maybe_sync_mu' );
 
@@ -139,7 +147,7 @@ function loadgateforge_admin_notice() {
 	echo '<div class="notice notice-warning"><p>';
 	printf(
 		/* translators: %s: path to the mu-plugins directory. */
-		esc_html__( 'LoadGate Forge could not install its loader into %s. Make that folder writable and reactivate the plugin, otherwise rules will not take effect.', 'loadgateforge' ),
+		esc_html__( 'LoadGate Forge could not install its loader into %s. Make that folder writable and reactivate the plugin, otherwise rules will not take effect.', 'loadgate-forge' ),
 		'<code>' . esc_html( loadgateforge_mu_dir() ) . '</code>'
 	);
 	echo '</p></div>';
@@ -151,10 +159,10 @@ add_action( 'admin_notices', 'loadgateforge_admin_notice' );
  */
 function loadgateforge_admin_menu() {
 	add_options_page(
-		__( 'LoadGate Forge', 'loadgateforge' ),
-		__( 'LoadGate Forge', 'loadgateforge' ),
+		__( 'LoadGate Forge', 'loadgate-forge' ),
+		__( 'LoadGate Forge', 'loadgate-forge' ),
 		'manage_options',
-		'loadgateforge',
+		'loadgate-forge',
 		'loadgateforge_render_page'
 	);
 }
@@ -189,7 +197,7 @@ function loadgateforge_candidate_plugins() {
  */
 function loadgateforge_handle_save() {
 	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_die( esc_html__( 'You are not allowed to do this.', 'loadgateforge' ) );
+		wp_die( esc_html__( 'You are not allowed to do this.', 'loadgate-forge' ) );
 	}
 	check_admin_referer( 'loadgateforge_save' );
 
@@ -253,7 +261,7 @@ function loadgateforge_handle_save() {
 	wp_safe_redirect(
 		add_query_arg(
 			array(
-				'page'        => 'loadgateforge',
+				'page'        => 'loadgate-forge',
 				'loadgateforge_msg' => 'saved',
 			),
 			admin_url( 'options-general.php' )
@@ -278,16 +286,16 @@ function loadgateforge_render_rule( $index, $rule, $candidates ) {
 	<div class="loadgateforge-rule" style="background:#fff;border:1px solid #dcdcde;border-radius:6px;padding:16px;margin:0 0 16px;max-width:760px;">
 		<p>
 			<label>
-				<strong><?php esc_html_e( 'On URLs where the path', 'loadgateforge' ); ?></strong>
+				<strong><?php esc_html_e( 'On URLs where the path', 'loadgate-forge' ); ?></strong>
 				<select name="rule_match[<?php echo esc_attr( $index ); ?>]">
-					<option value="contains" <?php selected( $match, 'contains' ); ?>><?php esc_html_e( 'contains', 'loadgateforge' ); ?></option>
-					<option value="prefix" <?php selected( $match, 'prefix' ); ?>><?php esc_html_e( 'starts with', 'loadgateforge' ); ?></option>
-					<option value="exact" <?php selected( $match, 'exact' ); ?>><?php esc_html_e( 'is exactly', 'loadgateforge' ); ?></option>
+					<option value="contains" <?php selected( $match, 'contains' ); ?>><?php esc_html_e( 'contains', 'loadgate-forge' ); ?></option>
+					<option value="prefix" <?php selected( $match, 'prefix' ); ?>><?php esc_html_e( 'starts with', 'loadgate-forge' ); ?></option>
+					<option value="exact" <?php selected( $match, 'exact' ); ?>><?php esc_html_e( 'is exactly', 'loadgate-forge' ); ?></option>
 				</select>
 				<input type="text" name="rule_path[<?php echo esc_attr( $index ); ?>]" value="<?php echo esc_attr( $path ); ?>" placeholder="/shop/" class="regular-text" />
 			</label>
 		</p>
-		<p><strong><?php esc_html_e( 'do not load these plugins:', 'loadgateforge' ); ?></strong></p>
+		<p><strong><?php esc_html_e( 'do not load these plugins:', 'loadgate-forge' ); ?></strong></p>
 		<div style="columns:2;max-width:720px;">
 			<?php foreach ( $candidates as $file => $name ) : ?>
 				<label style="display:block;margin:0 0 6px;">
@@ -299,7 +307,7 @@ function loadgateforge_render_rule( $index, $rule, $candidates ) {
 		<p>
 			<label style="color:#b32d2e;">
 				<input type="checkbox" name="rule_remove[<?php echo esc_attr( $index ); ?>]" value="1" />
-				<?php esc_html_e( 'Remove this rule when I save', 'loadgateforge' ); ?>
+				<?php esc_html_e( 'Remove this rule when I save', 'loadgate-forge' ); ?>
 			</label>
 		</p>
 	</div>
@@ -321,18 +329,18 @@ function loadgateforge_render_page() {
 	$msg        = isset( $_GET['loadgateforge_msg'] ) ? sanitize_key( wp_unslash( $_GET['loadgateforge_msg'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'LoadGate Forge', 'loadgateforge' ); ?></h1>
+		<h1><?php esc_html_e( 'LoadGate Forge', 'loadgate-forge' ); ?></h1>
 
 		<?php if ( 'saved' === $msg ) : ?>
-			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Rules saved.', 'loadgateforge' ); ?></p></div>
+			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Rules saved.', 'loadgate-forge' ); ?></p></div>
 		<?php endif; ?>
 
 		<p class="description" style="max-width:760px;">
-			<?php esc_html_e( 'Pick plugins that should not load on certain front-end URLs. Matching runs before WordPress loads plugins, so it only sees the URL, not the page template. Admin, login, REST and cron requests are never affected, and nothing here is permanent.', 'loadgateforge' ); ?>
+			<?php esc_html_e( 'Pick plugins that should not load on certain front-end URLs. Matching runs before WordPress loads plugins, so it only sees the URL, not the page template. Admin, login, REST and cron requests are never affected, and nothing here is permanent.', 'loadgate-forge' ); ?>
 		</p>
 
 		<?php if ( empty( $candidates ) ) : ?>
-			<div class="notice notice-info inline"><p><?php esc_html_e( 'No other active plugins to manage yet.', 'loadgateforge' ); ?></p></div>
+			<div class="notice notice-info inline"><p><?php esc_html_e( 'No other active plugins to manage yet.', 'loadgate-forge' ); ?></p></div>
 		<?php endif; ?>
 
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
@@ -342,12 +350,12 @@ function loadgateforge_render_page() {
 			<p>
 				<label>
 					<input type="checkbox" name="loadgateforge_enabled" value="1" <?php checked( '1', $enabled ); ?> />
-					<strong><?php esc_html_e( 'Apply rules on the front end', 'loadgateforge' ); ?></strong>
-					<span class="description"><?php esc_html_e( '(uncheck as a quick off switch)', 'loadgateforge' ); ?></span>
+					<strong><?php esc_html_e( 'Apply rules on the front end', 'loadgate-forge' ); ?></strong>
+					<span class="description"><?php esc_html_e( '(uncheck as a quick off switch)', 'loadgate-forge' ); ?></span>
 				</label>
 			</p>
 
-			<h2><?php esc_html_e( 'Rules', 'loadgateforge' ); ?></h2>
+			<h2><?php esc_html_e( 'Rules', 'loadgate-forge' ); ?></h2>
 
 			<?php
 			$index = 0;
@@ -360,10 +368,10 @@ function loadgateforge_render_page() {
 			?>
 
 			<p class="description" style="max-width:760px;">
-				<?php esc_html_e( 'Fill in the blank rule to add another. Disabling a plugin that renders a page will break that page, so test the URL after saving.', 'loadgateforge' ); ?>
+				<?php esc_html_e( 'Fill in the blank rule to add another. Disabling a plugin that renders a page will break that page, so test the URL after saving.', 'loadgate-forge' ); ?>
 			</p>
 
-			<?php submit_button( __( 'Save rules', 'loadgateforge' ) ); ?>
+			<?php submit_button( __( 'Save rules', 'loadgate-forge' ) ); ?>
 		</form>
 
 		<hr style="max-width:760px;margin:28px 0 12px;" />
@@ -371,9 +379,9 @@ function loadgateforge_render_page() {
 			<?php
 			printf(
 				/* translators: 1: Ko-fi support link, 2: developer contact email link. */
-				esc_html__( 'Built by Gunjan Jaswal. Enjoying LoadGate Forge? %1$s, or %2$s.', 'loadgateforge' ),
-				'<a href="' . esc_url( 'https://ko-fi.com/gunjanjaswal' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'buy me a coffee on Ko-fi', 'loadgateforge' ) . '</a>',
-				'<a href="' . esc_url( 'mailto:hello@gunjanjaswal.me' ) . '">' . esc_html__( 'contact the developer', 'loadgateforge' ) . '</a>'
+				esc_html__( 'Built by Gunjan Jaswal. Enjoying LoadGate Forge? %1$s, or %2$s.', 'loadgate-forge' ),
+				'<a href="' . esc_url( 'https://ko-fi.com/gunjanjaswal' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'buy me a coffee on Ko-fi', 'loadgate-forge' ) . '</a>',
+				'<a href="' . esc_url( 'mailto:hello@gunjanjaswal.me' ) . '">' . esc_html__( 'contact the developer', 'loadgate-forge' ) . '</a>'
 			);
 			?>
 		</p>
@@ -390,20 +398,20 @@ function loadgateforge_render_page() {
 function loadgateforge_action_links( $links ) {
 	$settings = sprintf(
 		'<a href="%s">%s</a>',
-		esc_url( admin_url( 'options-general.php?page=loadgateforge' ) ),
-		esc_html__( 'Settings', 'loadgateforge' )
+		esc_url( admin_url( 'options-general.php?page=loadgate-forge' ) ),
+		esc_html__( 'Settings', 'loadgate-forge' )
 	);
 	array_unshift( $links, $settings );
 
 	$links[] = sprintf(
 		'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
 		esc_url( 'https://ko-fi.com/gunjanjaswal' ),
-		esc_html__( 'Support on Ko-fi', 'loadgateforge' )
+		esc_html__( 'Support on Ko-fi', 'loadgate-forge' )
 	);
 	$links[] = sprintf(
 		'<a href="%s">%s</a>',
 		esc_url( 'mailto:hello@gunjanjaswal.me' ),
-		esc_html__( 'Contact developer', 'loadgateforge' )
+		esc_html__( 'Contact developer', 'loadgate-forge' )
 	);
 
 	return $links;
