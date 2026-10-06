@@ -23,8 +23,8 @@ up automatically on GitHub and, once deployed, on the WordPress.org page.
 After the plugin is approved, these files go into the SVN `/assets/` directory:
 
 ```
-svn co https://plugins.svn.wordpress.org/loadgate
-# copy this folder's files into loadgate/assets/
+svn co https://plugins.svn.wordpress.org/loadgateforge
+# copy this folder's files into loadgateforge/assets/
 svn add assets/*
 svn ci -m "Add plugin assets"
 ```

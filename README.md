@@ -1,4 +1,4 @@
-# LoadGate
+# LoadGate Forge
 
 <p align="center">
   <img src="https://img.shields.io/badge/WordPress-6.3%2B-21759B?logo=wordpress&logoColor=white" alt="WordPress 6.3+">
@@ -11,7 +11,7 @@
 
 <p align="center">
   <b>Stop plugins from loading where they aren't needed.</b><br>
-  Pick a URL, pick the plugins to skip there, and LoadGate keeps their code off that request. Reversible, and the admin is never affected.
+  Pick a URL, pick the plugins to skip there, and LoadGate Forge keeps their code off that request. Reversible, and the admin is never affected.
 </p>
 
 ---
@@ -20,13 +20,13 @@
 
 Most sites carry a few plugins that only matter on one or two pages: a form builder on the contact page, a gallery on the portfolio, a chat widget on the homepage. WordPress still loads every active plugin on every request, so all that code runs on pages that never use it.
 
-LoadGate lets you say "don't load this plugin on these URLs." On a matching request the plugin is taken out of the active list before it loads, so its PHP never runs there. Everywhere else, it works exactly as before.
+LoadGate Forge lets you say "don't load this plugin on these URLs." On a matching request the plugin is taken out of the active list before it loads, so its PHP never runs there. Everywhere else, it works exactly as before.
 
 ## How it works (and an honest limit)
 
-To stop a plugin from loading, the decision has to be made *before* WordPress loads plugins, through the `option_active_plugins` filter. Only a **must-use plugin** runs early enough for that, so LoadGate installs a small loader into `wp-content/mu-plugins/` on activation and removes it on deactivation.
+To stop a plugin from loading, the decision has to be made *before* WordPress loads plugins, through the `option_active_plugins` filter. Only a **must-use plugin** runs early enough for that, so LoadGate Forge installs a small loader into `wp-content/mu-plugins/` on activation and removes it on deactivation.
 
-Because that runs before WordPress knows which page you asked for, **matching is by request URL, not by `is_page()` or block content.** There's no way around that at plugin-load time, so LoadGate is honest about it: rules match the URL path.
+Because that runs before WordPress knows which page you asked for, **matching is by request URL, not by `is_page()` or block content.** There's no way around that at plugin-load time, so LoadGate Forge is honest about it: rules match the URL path.
 
 ## Safety
 
@@ -40,7 +40,7 @@ The loader bails out completely for anything that isn't a plain front-end page v
 | Cron and WP-CLI |
 | Any non-GET request |
 
-So even a rule that matches everything can't touch your dashboard, and LoadGate never disables itself. There's also a master switch to turn every rule off at once, and clearing a rule restores normal loading. Nothing is ever deleted.
+So even a rule that matches everything can't touch your dashboard, and LoadGate Forge never disables itself. There's also a master switch to turn every rule off at once, and clearing a rule restores normal loading. Nothing is ever deleted.
 
 ## Installation
 
@@ -51,14 +51,14 @@ So even a rule that matches everything can't touch your dashboard, and LoadGate 
 
 **Manually**
 
-1. Copy the `loadgate` folder into `wp-content/plugins/`.
-2. Activate **LoadGate**.
+1. Copy the `loadgateforge` folder into `wp-content/plugins/`.
+2. Activate **LoadGate Forge**.
 
-Either way, activation installs the loader into `wp-content/mu-plugins/`. Then open **Settings → LoadGate**.
+Either way, activation installs the loader into `wp-content/mu-plugins/`. Then open **Settings → LoadGate Forge**.
 
 ## How to use it
 
-1. Open **Settings → LoadGate**.
+1. Open **Settings → LoadGate Forge**.
 2. In the blank rule, choose how to match (contains / starts with / is exactly) and type the URL path, for example `/contact/`.
 3. Tick the plugins that should not load on that URL.
 4. Save. Fill in the next blank rule to add another.
@@ -75,7 +75,7 @@ Either way, activation installs the loader into `wp-content/mu-plugins/`. Then o
 
 ## Screenshot
 
-![The LoadGate settings screen with a rule and the master switch](.wordpress-org/screenshot-1.png)
+![The LoadGate Forge settings screen with a rule and the master switch](.wordpress-org/screenshot-1.png)
 
 ## Support
 

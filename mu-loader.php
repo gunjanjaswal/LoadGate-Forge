@@ -1,29 +1,29 @@
 <?php
 /**
- * LoadGate must-use loader.
+ * LoadGate Forge must-use loader.
  *
- * Installed automatically into wp-content/mu-plugins/ by the LoadGate plugin.
+ * Installed automatically into wp-content/mu-plugins/ by the LoadGate Forge plugin.
  * It runs before regular plugins load, so it can decide which plugins to skip
  * for the current front-end request. Do not edit by hand; the plugin overwrites
- * it on update. Deactivating LoadGate removes it.
+ * it on update. Deactivating LoadGate Forge removes it.
  *
- * LoadGate-MU-Version: 1.0.0
+ * LoadGateForge-MU-Version: 1.0.0
  *
- * @package LoadGate
+ * @package LoadGateForge
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! function_exists( 'loadgate_mu_filter_active_plugins' ) ) {
+if ( ! function_exists( 'loadgateforge_mu_filter_active_plugins' ) ) {
 	/**
 	 * Remove selected plugins from the active list for matching front-end URLs.
 	 *
 	 * @param mixed $plugins Active plugins list.
 	 * @return mixed
 	 */
-	function loadgate_mu_filter_active_plugins( $plugins ) {
+	function loadgateforge_mu_filter_active_plugins( $plugins ) {
 		if ( ! is_array( $plugins ) ) {
 			return $plugins;
 		}
@@ -60,11 +60,11 @@ if ( ! function_exists( 'loadgate_mu_filter_active_plugins' ) ) {
 			return $plugins;
 		}
 
-		if ( '1' !== get_option( 'loadgate_enabled', '1' ) ) {
+		if ( '1' !== get_option( 'loadgateforge_enabled', '1' ) ) {
 			return $plugins;
 		}
 
-		$rules = get_option( 'loadgate_rules', array() );
+		$rules = get_option( 'loadgateforge_rules', array() );
 		if ( empty( $rules ) || ! is_array( $rules ) ) {
 			return $plugins;
 		}
@@ -102,8 +102,8 @@ if ( ! function_exists( 'loadgate_mu_filter_active_plugins' ) ) {
 			return $plugins;
 		}
 
-		// LoadGate must never disable itself.
-		unset( $disable['loadgate/loadgate.php'] );
+		// LoadGate Forge must never disable itself.
+		unset( $disable['loadgateforge/loadgateforge.php'] );
 
 		$kept = array();
 		foreach ( $plugins as $plugin_file ) {
@@ -117,4 +117,4 @@ if ( ! function_exists( 'loadgate_mu_filter_active_plugins' ) ) {
 	}
 }
 
-add_filter( 'option_active_plugins', 'loadgate_mu_filter_active_plugins' );
+add_filter( 'option_active_plugins', 'loadgateforge_mu_filter_active_plugins' );

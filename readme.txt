@@ -1,5 +1,6 @@
-=== LoadGate ===
+=== LoadGate Forge ===
 Contributors: gunjanjaswal
+Donate link: https://ko-fi.com/gunjanjaswal
 Tags: performance, plugins, conditional, optimization, speed
 Requires at least: 6.3
 Tested up to: 7.1
@@ -14,14 +15,14 @@ Stop selected plugins from loading on chosen front-end URLs. Lighter pages, reve
 
 Most sites run a few plugins that are only needed on one or two pages: a form plugin used on the contact page, a gallery plugin used in the portfolio, a chat widget you only want on the homepage. Loading all of them on every request is wasted work.
 
-LoadGate lets you say "do not load this plugin on these URLs" and takes it off those requests entirely, so the code never runs there.
+LoadGate Forge lets you say "do not load this plugin on these URLs" and takes it off those requests entirely, so the code never runs there.
 
 * Pick a URL path and the plugins that should sit out on it.
 * Match by "contains", "starts with", or an exact path.
 * A master switch turns every rule off in one click.
 * Nothing is deleted and nothing is permanent. Clear a rule and the plugin loads normally again.
 
-To take a plugin off a request, the decision has to happen before WordPress loads plugins. LoadGate does that through a small must-use loader it installs for you on activation, and removes when you deactivate.
+To take a plugin off a request, the decision has to happen before WordPress loads plugins. LoadGate Forge does that through a small must-use loader it installs for you on activation, and removes when you deactivate.
 
 = What it does not touch =
 
@@ -35,9 +36,9 @@ Rules only ever apply to normal front-end page views. The admin area, the login 
 
 == Installation ==
 
-1. Upload the `loadgate` folder to `/wp-content/plugins/`, or install it from the Plugins screen.
+1. Upload the `loadgateforge` folder to `/wp-content/plugins/`, or install it from the Plugins screen.
 2. Activate the plugin. It installs its loader into `wp-content/mu-plugins/`.
-3. Go to Settings then LoadGate and add your first rule.
+3. Go to Settings then LoadGate Forge and add your first rule.
 
 If you see a warning that the loader could not be installed, make sure `wp-content/mu-plugins/` exists and is writable, then reactivate.
 
@@ -57,7 +58,7 @@ The choice of which plugins to load happens very early, before WordPress has wor
 
 = It says the loader could not be installed. =
 
-LoadGate needs to write one file into `wp-content/mu-plugins/`. On most hosts that works automatically. If the folder is missing or not writable, create it and make it writable, then deactivate and reactivate the plugin.
+LoadGate Forge needs to write one file into `wp-content/mu-plugins/`. On most hosts that works automatically. If the folder is missing or not writable, create it and make it writable, then deactivate and reactivate the plugin.
 
 = Does it work on multisite? =
 
@@ -65,7 +66,7 @@ Not yet. This first version targets single-site installs.
 
 == Screenshots ==
 
-1. The LoadGate settings screen: a rule choosing which plugins to skip on a URL, plus the master switch.
+1. The LoadGate Forge settings screen: a rule choosing which plugins to skip on a URL, plus the master switch.
 
 == Changelog ==
 
