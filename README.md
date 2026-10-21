@@ -87,7 +87,7 @@ Bug or idea? Open an issue, or email [hello@gunjanjaswal.me](mailto:hello@gunjan
 
 **Gunjan Jaswal**
 
-- Website: [gunjanjaswal.me](https://www.gunjanjaswal.me)
+- Website: [gunjanjaswal.me](https://gunjanjaswal.me)
 - Email: [hello@gunjanjaswal.me](mailto:hello@gunjanjaswal.me)
 - Ko-fi: [ko-fi.com/gunjanjaswal](https://ko-fi.com/gunjanjaswal)
 
