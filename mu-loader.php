@@ -7,13 +7,31 @@
  * for the current front-end request. Do not edit by hand; the plugin overwrites
  * it on update. Deactivating LoadGate Forge removes it.
  *
- * LoadGateForge-MU-Version: 1.0.0
+ * LoadGateForge-MU-Version: 1.1.0
  *
  * @package LoadGateForge
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+if ( ! function_exists( 'loadgateforge_mu_is_mobile' ) ) {
+	/**
+	 * Lightweight mobile detection for the loader, before plugins are loaded.
+	 *
+	 * @return bool
+	 */
+	function loadgateforge_mu_is_mobile() {
+		if ( function_exists( 'wp_is_mobile' ) ) {
+			return wp_is_mobile();
+		}
+		if ( empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
+			return false;
+		}
+		$ua = sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) );
+		return (bool) preg_match( '/Mobile|Android|Silk\/|Kindle|BlackBerry|Opera Mini|Opera Mobi|iPhone|iPod/i', $ua );
+	}
 }
 
 if ( ! function_exists( 'loadgateforge_mu_filter_active_plugins' ) ) {
@@ -74,9 +92,20 @@ if ( ! function_exists( 'loadgateforge_mu_filter_active_plugins' ) ) {
 			$path = $uri;
 		}
 
+		$is_mobile = loadgateforge_mu_is_mobile();
+
 		$disable = array();
 		foreach ( $rules as $rule ) {
 			if ( empty( $rule['path'] ) || empty( $rule['plugins'] ) || ! is_array( $rule['plugins'] ) ) {
+				continue;
+			}
+
+			// Device gate: skip the rule when it is aimed at the other device.
+			$device = isset( $rule['device'] ) ? $rule['device'] : 'any';
+			if ( 'mobile' === $device && ! $is_mobile ) {
+				continue;
+			}
+			if ( 'desktop' === $device && $is_mobile ) {
 				continue;
 			}
 

@@ -3,7 +3,7 @@
  * Plugin Name:       LoadGate Forge
  * Plugin URI:        https://github.com/gunjanjaswal/LoadGate-Forge
  * Description:       Stop selected plugins from loading on specific front-end URLs. Lighter pages, set from one screen, fully reversible, with admin and REST always left untouched.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires at least: 6.3
  * Requires PHP:      7.4
  * Author:            Gunjan Jaswal
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LOADGATEFORGE_VERSION', '1.0.0' );
+define( 'LOADGATEFORGE_VERSION', '1.1.0' );
 define( 'LOADGATEFORGE_SELF', plugin_basename( __FILE__ ) );
 
 /**
@@ -235,6 +235,14 @@ function loadgateforge_handle_save() {
 			}
 		}
 
+		$device = 'any';
+		if ( isset( $_POST['rule_device'][ $i ] ) ) {
+			$candidate_device = sanitize_key( wp_unslash( $_POST['rule_device'][ $i ] ) );
+			if ( in_array( $candidate_device, array( 'any', 'mobile', 'desktop' ), true ) ) {
+				$device = $candidate_device;
+			}
+		}
+
 		$plugins = array();
 		if ( isset( $_POST['rule_plugins'][ $i ] ) && is_array( $_POST['rule_plugins'][ $i ] ) ) {
 			$selected = array_map( 'sanitize_text_field', wp_unslash( $_POST['rule_plugins'][ $i ] ) );
@@ -252,6 +260,7 @@ function loadgateforge_handle_save() {
 		$rules[] = array(
 			'path'    => $path,
 			'match'   => $match,
+			'device'  => $device,
 			'plugins' => $plugins,
 		);
 	}
@@ -281,6 +290,7 @@ add_action( 'admin_post_loadgateforge_save', 'loadgateforge_handle_save' );
 function loadgateforge_render_rule( $index, $rule, $candidates ) {
 	$path    = isset( $rule['path'] ) ? $rule['path'] : '';
 	$match   = isset( $rule['match'] ) ? $rule['match'] : 'contains';
+	$device  = isset( $rule['device'] ) ? $rule['device'] : 'any';
 	$plugins = isset( $rule['plugins'] ) ? (array) $rule['plugins'] : array();
 	?>
 	<div class="loadgateforge-rule" style="background:#fff;border:1px solid #dcdcde;border-radius:6px;padding:16px;margin:0 0 16px;max-width:760px;">
@@ -293,6 +303,16 @@ function loadgateforge_render_rule( $index, $rule, $candidates ) {
 					<option value="exact" <?php selected( $match, 'exact' ); ?>><?php esc_html_e( 'is exactly', 'loadgate-forge' ); ?></option>
 				</select>
 				<input type="text" name="rule_path[<?php echo esc_attr( $index ); ?>]" value="<?php echo esc_attr( $path ); ?>" placeholder="/shop/" class="regular-text" />
+			</label>
+		</p>
+		<p>
+			<label>
+				<strong><?php esc_html_e( 'and the visitor is on', 'loadgate-forge' ); ?></strong>
+				<select name="rule_device[<?php echo esc_attr( $index ); ?>]">
+					<option value="any" <?php selected( $device, 'any' ); ?>><?php esc_html_e( 'any device', 'loadgate-forge' ); ?></option>
+					<option value="mobile" <?php selected( $device, 'mobile' ); ?>><?php esc_html_e( 'mobile only', 'loadgate-forge' ); ?></option>
+					<option value="desktop" <?php selected( $device, 'desktop' ); ?>><?php esc_html_e( 'desktop only', 'loadgate-forge' ); ?></option>
+				</select>
 			</label>
 		</p>
 		<p><strong><?php esc_html_e( 'do not load these plugins:', 'loadgate-forge' ); ?></strong></p>
