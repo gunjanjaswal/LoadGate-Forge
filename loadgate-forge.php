@@ -3,7 +3,7 @@
  * Plugin Name:       LoadGate Forge
  * Plugin URI:        https://github.com/gunjanjaswal/LoadGate-Forge
  * Description:       Stop selected plugins from loading on specific front-end URLs. Lighter pages, set from one screen, fully reversible, with admin and REST always left untouched.
- * Version:           1.1.0
+ * Version:           1.1.1
  * Requires at least: 6.3
  * Requires PHP:      7.4
  * Author:            Gunjan Jaswal
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LOADGATEFORGE_VERSION', '1.1.0' );
+define( 'LOADGATEFORGE_VERSION', '1.1.1' );
 define( 'LOADGATEFORGE_SELF', plugin_basename( __FILE__ ) );
 
 /**

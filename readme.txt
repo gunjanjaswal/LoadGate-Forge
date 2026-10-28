@@ -3,9 +3,9 @@ Contributors: gunjanjaswal
 Donate link: https://ko-fi.com/gunjanjaswal
 Tags: performance, plugins, conditional, optimization, speed
 Requires at least: 6.3
-Tested up to: 7.1
+Tested up to: 7.1.4
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,6 +69,9 @@ Not yet. This first version targets single-site installs.
 1. The LoadGate Forge settings screen: a rule choosing which plugins to skip on a URL, plus the master switch.
 
 == Changelog ==
+
+= 1.1.1 =
+* Tested and confirmed compatible with WordPress 7.1.4.
 
 = 1.1.0 =
 * New: each rule can now target a device. Alongside the URL match, choose "mobile only" or "desktop only" so a plugin is held back just for phones or just for desktops, which is handy for heavy sliders, chat widgets or trackers you only want on one. "Any device" keeps the old behaviour.
