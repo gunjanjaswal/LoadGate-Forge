@@ -3,9 +3,9 @@
 <p align="center">
   <img src="https://img.shields.io/badge/WordPress-6.3%2B-21759B?logo=wordpress&logoColor=white" alt="WordPress 6.3+">
   <img src="https://img.shields.io/badge/PHP-7.4%2B-777BB4?logo=php&logoColor=white" alt="PHP 7.4+">
-  <img src="https://img.shields.io/badge/Tested%20up%20to-7.1-21759B?logo=wordpress&logoColor=white" alt="Tested up to 7.1">
+  <img src="https://img.shields.io/badge/Tested%20up%20to-7.1.4-21759B?logo=wordpress&logoColor=white" alt="Tested up to 7.1.4">
   <img src="https://img.shields.io/badge/License-GPLv2%2B-3DA639?logo=gnu&logoColor=white" alt="License GPLv2+">
-  <img src="https://img.shields.io/badge/version-1.0.0-brightgreen" alt="Version 1.0.0">
+  <img src="https://img.shields.io/badge/version-1.1.1-brightgreen" alt="Version 1.1.1">
   <img src="https://img.shields.io/badge/admin-never%20touched-blue" alt="Admin never touched">
 </p>
 
@@ -76,6 +76,17 @@ Either way, activation installs the loader into `wp-content/mu-plugins/`. Then o
 ## Screenshot
 
 ![The LoadGate Forge settings screen with a rule and the master switch](.wordpress-org/screenshot-1.png)
+
+## Changelog
+
+### 1.1.1
+- Tested and confirmed compatible with WordPress 7.1.4.
+
+### 1.1.0
+- New: each rule can now target a device. Alongside the URL match, choose "mobile only" or "desktop only" so a plugin is held back just for phones or just for desktops, which is handy for heavy sliders, chat widgets or trackers you only want on one. "Any device" keeps the old behaviour.
+
+### 1.0.0
+- First release: per-URL plugin disabling through an auto-installed must-use loader, with match types, a master switch, and admin, login, REST and cron always excluded.
 
 ## Support
 
