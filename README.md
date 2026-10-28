@@ -79,6 +79,8 @@ Either way, activation installs the loader into `wp-content/mu-plugins/`. Then o
 
 ## Changelog
 
+The full changelog lives in [`readme.txt`](readme.txt). Recent releases:
+
 ### 1.1.1
 - Tested and confirmed compatible with WordPress 7.1.4.
 
